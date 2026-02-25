@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Para Ti ❤</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            min-height: 100dvh; /* Para móviles modernos */
+            margin: 0;
+            background: linear-gradient(135deg, #fff5f5, #ffe4e4);
+            perspective: 1000px;
+            overflow: hidden;
+            padding: 15px;
+            position: relative;
+        }
+        
+        /* Fondo con corazones animados para móviles */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffb6c1' opacity='0.1'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            background-size: 50px;
+            background-repeat: repeat;
+            opacity: 0.1;
+            pointer-events: none;
+            animation: float 20s linear infinite;
+        }
+        
+        @keyframes float {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+        
+        .gift-box {
+            position: relative;
+            width: min(320px, 90vw);
+            height: min(420px, 70vh);
+            max-height: 500px;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            cursor: pointer;
+            z-index: 10;
+            margin: auto;
+            touch-action: manipulation; /* Mejor para móviles */
+        }
+        
+        .gift-box:active {
+            transform: scale(0.98);
+        }
+        
+        .gift-box:hover {
+            transform: rotateY(10deg) rotateX(10deg);
+        }
+        
+        /* Solo aplicar hover en PC */
+        @media (hover: hover) {
+            .gift-box:hover {
+                transform: rotateY(10deg) rotateX(10deg);
+            }
+        }
+        
+        .box {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffb6c1, #ffccd5);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(255, 105, 180, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            backface-visibility: hidden;
+            border: 3px solid #ffebee;
+            -webkit-backface-visibility: hidden;
+        }
+        
+        .box-front {
+            z-index: 2;
+        }
+        
+        .box-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #ffccd5, #ffebee);
+            display: none;
+            overflow-y: auto; /* Para contenido largo en móviles */
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .gift-box.open .box-front {
+            transform: rotateY(180deg);
+            display: none;
+        }
+        
+        .gift-box.open .box-back {
+            display: flex;
+            transform: rotateY(0deg);
+        }
+        
+        .ribbon {
+            position: absolute;
+            width: 100%;
+            height: 8%;
+            background: linear-gradient(90deg, #fff, #ffe4e4, #fff);
+            top: 15%;
+            left: 0;
+            box-shadow: 0 2px 10px rgba(255, 182, 193, 0.3);
+            border-radius: 10px;
+        }
+        
+        .bow {
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(70px, 20%);
+            height: min(70px, 20%);
+            background: radial-gradient(circle at 30% 30%, #fff, #ffd9e2);
+            border-radius: 50%;
+            z-index: 3;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+            animation: bowGlow 2s infinite alternate;
+        }
+        
+        @keyframes bowGlow {
+            to { box-shadow: 0 5px 25px rgba(255, 105, 180, 0.6); }
+        }
+        
+        .bow:before, .bow:after {
+            content: '';
+            position: absolute;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(circle at 30% 30%, #fff, #ffd9e2);
+            border-radius: 50%;
+            top: -40%;
+        }
+        
+        .bow:before {
+            left: -40%;
+        }
+        
+        .bow:after {
+            right: -40%;
+        }
+        
+        .handwriting {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(32px, 10vw, 42px);
+            color: #d23669;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            text-align: center;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+        
+        p {
+            font-family: 'Pacifico', cursive;
+            color: #555;
+            text-align: center;
+            margin: 8px 0;
+            line-height: 1.5;
+            font-size: clamp(14px, 4vw, 18px);
+            padding: 0 10px;
+            word-break: break-word;
+        }
+        
+        .heart {
+            color: #ff4757;
+            font-size: clamp(24px, 7vw, 28px);
+            animation: beat 1s infinite alternate;
+            display: inline-block;
+            margin: 0 5px;
+            filter: drop-shadow(0 0 5px rgba(255, 71, 87, 0.3));
+        }
+        
+        @keyframes beat {
+            to { transform: scale(1.3); }
+        }
+        
+        button {
+            background: linear-gradient(135deg, #fff, #ffebee);
+            border: none;
+            padding: clamp(10px, 3vh, 12px) clamp(20px, 6vw, 25px);
+            border-radius: 30px;
+            color: #ff6b8b;
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(16px, 5vw, 18px);
+            font-weight: normal;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            appearance: none;
+            width: fit-content;
+            min-width: 120px;
+        }
+        
+        button:active {
+            transform: translateY(-2px) scale(0.95);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+            background: linear-gradient(135deg, #ffebee, #fff);
+        }
+        
+        @media (hover: hover) {
+            button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
+                background: linear-gradient(135deg, #ffebee, #fff);
+            }
+        }
+        
+        .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 10;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: clamp(3px, 1vw, 5px);
+            height: clamp(3px, 1vw, 5px);
+            background-color: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 2s ease-out infinite;
+            filter: blur(0.5px);
+        }
+        
+        @keyframes sparkle {
+            0% { transform: scale(0); opacity: 0; }
+            50% { opacity: 1; transform: scale(1.5); }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        
+        .music-control {
+            position: fixed;
+            bottom: clamp(15px, 4vh, 20px);
+            right: clamp(15px, 4vw, 20px);
+            background: linear-gradient(135deg, #ffebee, #ffd9e2);
+            border-radius: 50%;
+            width: clamp(45px, 12vw, 50px);
+            height: clamp(45px, 12vw, 50px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(210, 54, 105, 0.3);
+            z-index: 100;
+            border: 2px solid #fff;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+        }
+        
+        .music-control:active {
+            transform: scale(0.9);
+        }
+        
+        .music-control i {
+            color: #d23669;
+            font-size: clamp(20px, 6vw, 24px);
+        }
+        
+        /* Video container mejorado para móviles */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .video-container.active {
+            display: flex;
+        }
+        
+        .video-player {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+        
+        .close-video {
+            position: absolute;
+            top: max(15px, env(safe-area-inset-top));
+            right: max(15px, env(safe-area-inset-right));
+            color: white;
+            font-size: clamp(24px, 7vw, 30px);
+            cursor: pointer;
+            z-index: 2001;
+            background: rgba(210, 54, 105, 0.8);
+            width: clamp(40px, 12vw, 50px);
+            height: clamp(40px, 12vw, 50px);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            touch-action: manipulation;
+        }
+        
+        .close-video:active {
+            transform: scale(0.9);
+            background: rgba(210, 54, 105, 1);
+        }
+        
+        /* Ajustes para iPhone y dispositivos con notch */
+        @supports (padding: max(0px)) {
+            .close-video {
+                top: max(15px, env(safe-area-inset-top));
+                right: max(15px, env(safe-area-inset-right));
+            }
+        }
+        
+        /* Mejoras para pantallas muy pequeñas */
+        @media (max-width: 380px) {
+            .gift-box {
+                width: 280px;
+                height: 380px;
+            }
+            
+            p {
+                font-size: 14px;
+                margin: 5px 0;
+            }
+            
+            .handwriting {
+                font-size: 32px;
+            }
+        }
+        
+        /* Orientación landscape en móviles */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .gift-box {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .box-back {
+                justify-content: flex-start;
+                padding-top: 30px;
+            }
+            
+            p {
+                font-size: 12px;
+                margin: 3px 0;
+            }
+            
+            button {
+                margin-top: 8px;
+                padding: 8px 20px;
+            }
+        }
+        
+        /* Prevenir scroll cuando el video está abierto */
+        body.video-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Animación de carga suave */
+        .gift-box {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Mensaje de orientación para landscape */
+        .orientation-message {
+            display: none;
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #d23669;
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px;
+            z-index: 50;
+        }
+        
+        @media (max-height: 400px) and (orientation: landscape) {
+            .orientation-message {
+                display: block;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="orientation-message">
+        Gira tu teléfono para mejor experiencia ❤
+    </div>
+
+    <div class="gift-box" onclick="this.classList.toggle('open'); createSparkles()">
+        <div class="box box-front">
+            <div class="ribbon"></div>
+            <div class="bow"></div>
+            <h1 style="font-family: 'Pacifico', cursive; color: #d23669; font-size: clamp(20px, 6vw, 28px); text-align: center; padding: 0 10px;">¡Para Ti, Mi Amor!</h1>
+            <p>Toca este regalo con cariño</p>
+            <span class="heart">❤</span>
+        </div>
+        <div class="box box-back">
+            <div class="handwriting">Te Amo</div>
+            <p>Quería recordarte lo mucho que brillas en mi vida</p>
+            <p>que eres mi refugio, mi calma, mi lugar favorito siempre,</p>
+            <p>tus abrazos son hogar y tus palabras abrigo para mi <span class="heart">❤</span></p>
+            <button onclick="playFullscreenVideo(event)">Ver</button>
+        </div>
+        <div class="sparkles" id="sparkles"></div>
+    </div>
+
+    <div class="music-control" onclick="toggleMusic(event)">
+        <i class="fas fa-music"></i>
+    </div>
+
+    <!-- Contenedor de video en pantalla completa -->
+    <div class="video-container" id="videoContainer">
+        <div class="close-video" onclick="closeVideo(event)">✕</div>
+        <video id="loveVideo" class="video-player" playsinline controls>
+            <source src="video/mensaje-especial.mp4" type="video/mp4">
+            Tu navegador no soporta la reproducción de videos.
+        </video>
+    </div>
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="audio/romantic-music.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <script>
+        const music = document.getElementById('bgMusic');
+        let isMusicPlaying = false;
+        let userInteracted = false;
+
+        // Prevenir propagación de eventos para que no cierre el regalo
+        function toggleMusic(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (isMusicPlaying) {
+                music.pause();
+            } else {
+                music.play().catch(e => console.log('Audio error:', e));
+            }
+            isMusicPlaying = !isMusicPlaying;
+            updateMusicIcon();
+        }
+
+        function updateMusicIcon() {
+            const icon = document.querySelector('.music-control i');
+            icon.className = isMusicPlaying ? 'fas fa-pause' : 'fas fa-music';
+        }
+
+        function createSparkles() {
+            const sparklesContainer = document.getElementById('sparkles');
+            sparklesContainer.style.display = 'block';
+            sparklesContainer.innerHTML = '';
+            
+            const sparkleCount = window.innerWidth < 768 ? 20 : 30; // Menos sparkles en móvil
+            
+            for (let i = 0; i < sparkleCount; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                sparkle.style.left = `${Math.random() * 100}%`;
+                sparkle.style.top = `${Math.random() * 100}%`;
+                sparkle.style.animationDelay = `${Math.random() * 2}s`;
+                sparkle.style.animationDuration = `${1 + Math.random() * 2}s`;
+                sparkle.style.backgroundColor = `hsl(${Math.random() * 60 + 330}, 100%, 75%)`;
+                sparklesContainer.appendChild(sparkle);
+            }
+            
+            setTimeout(() => {
+                sparklesContainer.style.display = 'none';
+            }, 2000);
+        }
+        
+        function playFullscreenVideo(event) {
+            if (event) {
+                event.stopPropagation(); // Prevenir que se cierre el regalo
+            }
+            
+            const videoContainer = document.getElementById('videoContainer');
+            const video = document.getElementById('loveVideo');
+            
+            // Pausar la música de fondo si está sonando
+            if (isMusicPlaying) {
+                music.pause();
+            }
+            
+            // Prevenir scroll en el body
+            document.body.classList.add('video-open');
+            
+            // Mostrar el contenedor de video
+            videoContainer.classList.add('active');
+            
+            // Reproducir el video
+            video.play().catch(e => console.log('Video error:', e));
+            
+            // Intentar poner en pantalla completa si es PC, pero no forzar en móvil
+            if (window.innerWidth > 768) {
+                if (video.requestFullscreen) {
+                    video.requestFullscreen();
+                } else if (video.webkitRequestFullscreen) {
+                    video.webkitRequestFullscreen();
+                } else if (video.msRequestFullscreen) {
+                    video.msRequestFullscreen();
+                }
+            }
+            
+            createSparkles();
+        }
+
+        function closeVideo(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            const videoContainer = document.getElementById('videoContainer');
+            const video = document.getElementById('loveVideo');
+            
+            // Pausar el video
+            video.pause();
+            video.currentTime = 0;
+            
+            // Ocultar el contenedor
+            videoContainer.classList.remove('active');
+            
+            // Restaurar scroll
+            document.body.classList.remove('video-open');
+            
+            // Salir de pantalla completa si está activa
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else if (document.webkitFullscreenElement) {
+                document.webkitExitFullscreen();
+            } else if (document.msFullscreenElement) {
+                document.msExitFullscreen();
+            }
+            
+            // Reanudar la música si estaba sonando
+            if (isMusicPlaying) {
+                music.play().catch(e => console.log('Audio resume error:', e));
+            }
+        }
+
+        // Evento para detectar cuando se sale de pantalla completa
+        document.addEventListener('fullscreenchange', exitFullscreenHandler);
+        document.addEventListener('webkitfullscreenchange', exitFullscreenHandler);
+        document.addEventListener('mozfullscreenchange', exitFullscreenHandler);
+        document.addEventListener('MSFullscreenChange', exitFullscreenHandler);
+
+        function exitFullscreenHandler() {
+            if (!document.fullscreenElement && 
+                !document.webkitFullscreenElement && 
+                !document.mozFullScreenElement && 
+                !document.msFullscreenElement) {
+                // Verificar si el video container está activo antes de cerrar
+                const videoContainer = document.getElementById('videoContainer');
+                if (videoContainer.classList.contains('active')) {
+                    // No cerramos automáticamente, solo actualizamos estado
+                    // closeVideo();
+                }
+            }
+        }
+
+        // Reproducir música automáticamente con interacción del usuario
+        document.addEventListener('click', function initAudio() {
+            if (!userInteracted) {
+                userInteracted = true;
+                music.play().then(() => {
+                    isMusicPlaying = true;
+                    updateMusicIcon();
+                }).catch(e => console.log('Auto-play prevented:', e));
+            }
+        }, { once: true });
+
+        // Soporte para pantalla táctil
+        document.addEventListener('touchstart', function(e) {
+            // Permitir interacción táctil
+        }, { passive: true });
+
+        // Prevenir zoom con doble tap en el regalo
+        document.querySelector('.gift-box').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+
+        console.log('¡Todo listo para sorprender a tu amor! ❤️');
+    </script>
+</body>
+</html>
